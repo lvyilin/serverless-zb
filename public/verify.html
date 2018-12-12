@@ -6,20 +6,91 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Verify Email</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/skel.min.js"></script>
+    <script src="js/skel-layers.min.js"></script>
+    <script src="js/init.js"></script>
+    <noscript>
+        <link rel="stylesheet" href="css/skel.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/style-xlarge.css" />
+    </noscript>
 </head>
-<body>
-<h1>Verify Email</h1>
-<form id="verifyForm">
-    <input type="email" id="emailInputVerify" placeholder="Email" required>
-    <input type="text" id="codeInputVerify" placeholder="Verification Code" pattern=".*" required>
+<body class="landing">
+    <header id="header">
+        <h1 style="font-size: 100%" class=""><a href="verify.html">Refresh</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li><a href="">Link1</a></li>
+                    <li><a href="">Link2</a></li>
+                    <li><a href="">Link3</a></li>
+                    <li><a href="#" class="button special">button</a></li>
+                </ul>
+            </nav>
+    </header>
 
-    <input type="submit" value="Verify">
-</form>
+<section id="three" class="wrapper style3 special" style="background-color:slategrey">
+        <div class="container">
+            <header class="major">
+                <h2>Verify Email</h2>
+                <p>Something to write</p>
+            </header>
+        </div>
+        <div class="container 50%">
+            <form id="verifyForm">
+                <div class="row uniform">
+                    <div class="12u$">
+                        <input type="email" id="emailInputVerify" placeholder="Email" required>
+                    </div>
+                    <div class="12u$">
+                        <input type="text" id="codeInputVerify" placeholder="Verification Code" pattern=".*" required>
+                    </div>
+                    <div class="12u$">
+                            <ul class="actions">
+                                <li><input type="submit" value="Verify" class="special big"></li>
+                            </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+</section>
+
 <script src="js/vendor/jquery-3.3.1.min.js"></script>
 <script src="js/vendor/bootstrap.min.js"></script>
 <script src="js/vendor/aws-cognito-sdk.min.js"></script>
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/auth.js"></script>
+
+<!-- Footer -->
+<footer id="footer" style="padding:6em 0em 8.5em" >
+        <div class="container">
+            <div class="row">
+                <div class="8u 12u$(medium)">
+                    <ul class="copyright">
+                        <li>&copy; Untitled. All rights reserved.</li>
+                        <li>Design: <a href="https://github.com/lvyilin/serverless-zb">serverless-zb</a></li>
+                        <li>Images: <a href="https://github.com/lvyilin/serverless-zb">serverless-zb</a></li>
+                    </ul>
+                </div>
+                <div class="4u$ 12u$(medium)">
+                    <ul class="icons">
+                        <li>
+                            <a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+                        </li>
+                        <li>
+                            <a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+                        </li>
+                        <li>
+                            <a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+                        </li>
+                        <li>
+                            <a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
