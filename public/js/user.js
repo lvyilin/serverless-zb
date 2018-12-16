@@ -15,37 +15,13 @@ var Helper = window.Helper || {};
         window.location.href = 'login.html';
     });
 
-    $.ajaxSetup({
-        beforeSend: function (xhr, settings) {
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                // Only send the token to relative URLs i.e. locally.
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            }
-        }
-    });
     // Add your AJAX code here
     // ----------------
     // POST Demo
     function requestTest() {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/api/test/',
+            url: _config.api.invokeUrl + '/api/test',
             headers: {
                 Authorization: authToken
             },
@@ -66,7 +42,7 @@ var Helper = window.Helper || {};
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
                 console.error('Error request: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
-                alert('An error occured when requesting:\n' + jqXHR.responseText);
+                alert('An error occurred when requesting:\n' + jqXHR.responseText);
             }
         });
     }
