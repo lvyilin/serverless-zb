@@ -59,14 +59,14 @@ def verify_token(token):
 def handler(event, context):
     try:
         status, chaims = verify_token(event['headers']['Authorization'])
-        flag = True
+        flag = False
         message = ""
         while True:
             if status is False:
-                flag = False
                 message = chaims
                 break
             username = chaims["cognito:username"]
+            print(event)
             json_body = json.loads(event['body'], encoding="utf8")
             dataset_id = json_body['id']
             partner_id = json_body['partner']
@@ -74,7 +74,6 @@ def handler(event, context):
                 message = "Missing parameter"
                 break
             if dataset_id.split("#")[0] != username:
-                flag = False
                 message = "You don't have permission to do this"
                 break
             # TODO: check partner_id valid
@@ -85,13 +84,11 @@ def handler(event, context):
                 }
             )
             if response is None or 'Item' not in response:
-                flag = False
                 message = "Dataset does not exist"
                 break
             item = response['Item']
             newitem = item['partner'].copy()
             if partner_id in newitem:
-                flag = False
                 message = "Partner already exists"
                 break
             newitem.append(partner_id)
@@ -106,6 +103,7 @@ def handler(event, context):
                 },
                 ReturnValues="UPDATED_NEW"
             )
+            flag = True
             break
         response_body = {
             "status": "success" if flag else "error",
@@ -127,7 +125,7 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    token = 'eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjc1Y2EyOWYtZmViOC0xMWU4LWFlMTAtZGRlYmE4Yjg2ZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDQ2OTI3NTIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ0ODQ5NDc5LCJpYXQiOjE1NDQ4NDU4NzksImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.ISaqoiSGdJZ21tZAnqRnau8gzkY1cUFnOFPGVxiLxChSorLL0uiIuqhVvbjAcHS1rmp6Clt8vk9bzOaU5Iz16qjtkAQuVQC1VDk3dm5yu0z53sG5E6_qjwsEtxUkbg8cSE3sgUtK_6sXVLf6Rwf3wULBxjfGQ1Y3ubGBVADmpfVo6QUGT0EM0nYkL0_FTZrPUkQc-Zf02wHPGkUAFL1jqj3is8KcQohs9-DHz9OX8bxYLQKHaaWRfBni1zgYOVs_DZYDoYn-OXAqVgu4tJRBlt4spRzRSW2kEsvC_LeMPS7OO-cx-Xb6M4HWUllPszEnqzHRqzNt9DI6QuYdaClIUA'
+    token = 'eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjk0NDc4YmMtMDFhNy0xMWU5LWE4OWYtNjcwODBmZjdjOTM2IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDUwMTUzMDcsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ1MDQwMDU1LCJpYXQiOjE1NDUwMzY0NTUsImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.TBYtAdUfPIAvkC_9HERHuKWOYQwYNJjYWvR3Ri-mVzicvWCsmsA6DjRyrIubTnkul6wD-KjpI01P2OSpmYqg7nttwDDK9OK_Z-nuXv4A_h9NWMGykP62-JUnbxkaNRcLz1CxFUgB-x9qUZ9ryGpxadrqxFAPsLIZMIDvycrnn_raaoCAEg2CZxHTvxJZWV4Rs5TIQczAvteGdStONUkO4Vm4eCxCzdkxEk8qsXv56Ob6LsUfy6lPv3JsSbb_YAMWDuC48Fym1PC5QLF7aFmyKbeSjIkhMuBp1CgbvGK53p5Ft9qvEc3rTISLmheMTtgAp2POMHU6VkMBHquSPKR2JA'
     event = {
         'headers': {
             'Authorization': token

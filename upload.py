@@ -6,7 +6,6 @@ from jose import jwk, jwt
 from jose.utils import base64url_decode
 import boto3
 import base64
-from boto3.dynamodb.conditions import Key, Attr
 
 region = 'ap-northeast-1'
 userpool_id = 'ap-northeast-1_c5w0oPPED'
@@ -54,9 +53,17 @@ def handler(event, context):
                 message = chaims
                 break
             username = chaims["cognito:username"]
-            json_body = json.loads(event['body'], encoding="utf8")
-            dataset_name = json_body['name']
-            dataset_csv = base64.b64decode(json_body['data'])
+            multipart = event['body']
+            content_type = event['headers']['content-type']
+            boundary = "--" + content_type.split(';')[1][1:].lstrip("boundary=")
+            parts = multipart.split(''.join(('\r\n', boundary)))
+            results = []
+            for part in parts:
+                ls = part.split("\r\n\r\n")
+                if len(ls) >= 2:
+                    results.append(ls[1])
+            dataset_name = results[1]
+            dataset_csv = bytes(results[0], encoding='utf8')
             if dataset_name is None or dataset_csv is None:
                 message = "Missing parameter"
                 break
@@ -117,8 +124,8 @@ if __name__ == '__main__':
         event = {
             "headers": {
                 "Authorization": token,
+                'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryu0mdLExLQgJNolBt',
             },
-            "queryStringParameters": None,
-            "body": "{\"name\": \"test.csv\", \"data\": \"MjMsIiwiLCIiIiIsMiwmIzM5OyYjMzk7JiMzOTsmIzM5Ow0KNTIyOCzliJjkvannkKYs5byg6Im66LCLLDgs5YiY5L2p55Cm5oqT5L2P5LqG5LiO5byg6Im66LCL5ZCI5L2c55qE5py65Lya77yMDQo0OTIs5pav6JKC6IqsJiMxODM75bqT6YeMLOaItOWwlCYjMTgzO+W6k+mHjCwxLOaWr+iSguiKrCYjMTgzO+W6k+mHjOWSjOeItuS6suaItOWwlCYjMTgzO+W6k+mHjOS7peWPiuiLjyYjMTgzO+S8r+W+t+e7hOmYn+WPgui1mw0KNDc3OSzmnY7kupHpvpks5a2Z5bKzLDgs5p2O5LqR6b6Z5ZKM6IOh5pmv57+85a+G6K6u6IGU5ZCI5Yav546J56Wl5a2Z5bKz5Li+6KGM6LW35LmJ77yMDQo=\"}",
+            "body": '------WebKitFormBoundaryu0mdLExLQgJNolBt\r\nContent-Disposition: form-data; name="data"; filename="demo.csv"\r\nContent-Type: application/vnd.ms-excel\r\n\r\n23,",","""",2,\'\'\'\'\r\n5228,������,����ı,8,������ץס��������ı�����Ļ��ᣬ\r\n492,˹�ٷҡ�����,����������,1,˹�ٷҡ�����\u0378��״����������Լ��ա�������Ӳ���\r\n4779,������,����,8,�������ͺ������������Ϸ����������������壬\r\n\r\n------WebKitFormBoundaryu0mdLExLQgJNolBt\r\nContent-Disposition: form-data; name="name"\r\n\r\nbbb\r\n------WebKitFormBoundaryu0mdLExLQgJNolBt--\r\n',
             "isBase64Encoded": True}
     handler(event, None)

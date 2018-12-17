@@ -66,15 +66,15 @@ def handler(event, context):
                 message = chaims
                 break
             username = chaims["cognito:username"]
-            json_body = json.loads(event['body'], encoding="utf8")
+            json_body = event['queryStringParameters']
             dataset_id = json_body['id']
-            offset = json_body['offset']
-            limit = json_body['limit']
+            offset = int(json_body['offset'])
+            limit = int(json_body['limit'])
             if dataset_id is None or offset is None or limit is None:
                 message = "Missing parameter"
                 break
             # Check offset and limit
-            if  offset < 0 or limit <= 0:
+            if offset < 0 or limit <= 0:
                 message = "The offset must >=0, the limit must be >0"
                 break
             offset += 1  # skip header
@@ -103,7 +103,10 @@ def handler(event, context):
             results = {'header': header}
             records = []
             for item in items:
-                records.append({"id": item['row'], "values": item['col']})
+                if 'tag' in item:
+                    records.append({"id": item['row'], "values": item['col'], "tag": item['tag']})
+                else:
+                    records.append({"id": item['row'], "values": item['col'], "tag": []})
             results['records'] = records
             flag = True
             break
@@ -134,7 +137,7 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    token = "eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjc1Y2EyOWYtZmViOC0xMWU4LWFlMTAtZGRlYmE4Yjg2ZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDQ2OTI3NTIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ0NzYyNDQwLCJpYXQiOjE1NDQ3NTg4NDAsImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.eI6NyHg8PlcgfI12w4ZT7OryNzD-_fCwn623YtJRzlHq-tzHoqGTTF16Vo8Tvrd5gNykqy7hpioxtvo_FqAMJEAJRdud4QoxrXYrPy4bv_rrS786Z-VkAC8Dww5_6ZtiQMRCHuY_oAGigGXakrI0reBKi-jU9Uz0zZpAHWRJdfXRW_myCBT1vxQu97pvFqZpxI8MgEyRI5Cr6iGJy3aVF1kdj-f4p7ufzs9my9f7gGf8Rd-0E489DDj2VnBSRYq_wZi4xHheT8cJC-7AJr0VU2ZIBYZkJDL_Lo5kID9QCgMpgrzNc87QdrRUkh-zudJ1EkfruDFxZ99b27A7sYNe1w"
+    token = "eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjk0NDc4YmMtMDFhNy0xMWU5LWE4OWYtNjcwODBmZjdjOTM2IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDUwMTUzMDcsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ1MDMyMTYzLCJpYXQiOjE1NDUwMjg1NjQsImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.ilvRMxrV4HoQ0mAoS_Pm0gaiYLs12aJifpxak_hvh3Mm_Yrr18hi37vVzSbtoUTeMKjSPRt_8Nf-fGfYZiX24hEAuI41OFttkdkmKSQf94mZsgVZjSTUoZEMCVBm89wuH6ilfbU5NcebfeyEIMTTDjLR1yRoVMUM4PSK0jVTNZdlMARTBTCE2e2_GOSx2g6Nai3GyVGDjWLlus-b3iodKuDvmZtOYx_xQ6V1dDZjCrQ-QjwKQIHq88vFWXWPV0wclqd5itcg-L4Ws1-X4wZy6yxEOVV3TIAZEPWF_GMlJF-DlMFiTjql_ERwBHqllACxVGCuUn6aJxTWmb1a5A9qmg"
     event = {'resource': '/api/test', 'path': '/api/test', 'httpMethod': 'POST',
              'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br',
                          'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7',
@@ -171,7 +174,11 @@ if __name__ == '__main__':
                                    'X-Amzn-Trace-Id': ['Root=1-5c120e80-a53212fcce6cbe3cf7a7ce4a'],
                                    'X-Forwarded-For': ['193.38.139.82, 70.132.40.89'], 'X-Forwarded-Port': ['443'],
                                    'X-Forwarded-Proto': ['https']},
-             'queryStringParameters': None,
+             'queryStringParameters': {
+                 "id": "lvyilin48@foxmail.com#test.csv",
+                 "offset": 0,
+                 "limit": 10
+             },
              'multiValueQueryStringParameters': None, 'pathParameters': None, 'stageVariables': None,
              'requestContext': {'resourceId': 'tybalc', 'resourcePath': '/api/test', 'httpMethod': 'POST',
                                 'extendedRequestId': 'R1c0IFSEtjMFVnA=',
@@ -187,6 +194,5 @@ if __name__ == '__main__':
                                              'user': None},
                                 'domainName': 'jd8mxu2ri4.execute-api.ap-northeast-1.amazonaws.com',
                                 'apiId': 'jd8mxu2ri4'},
-             'body': "{\"id\": \"lvyilin48@foxmail.com#test.csv\",\"offset\":0, \"limit\":10 }",
              'isBase64Encoded': False}
     handler(event, None)

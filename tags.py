@@ -89,10 +89,11 @@ def handler(event, context):
                 message = "You don't have permission to do this"
                 break
             for tag in tags:
+                tag['tag'] = [x for x in tag['tag'] if x]
                 response = table.update_item(
                     Key={
                         'uid': dataset_id,
-                        'row': tag['id'],
+                        'row': int(tag['id']),
                     },
                     UpdateExpression='SET tag = :tag',
                     ExpressionAttributeValues={
@@ -127,7 +128,7 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    token =  'eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjc1Y2EyOWYtZmViOC0xMWU4LWFlMTAtZGRlYmE4Yjg2ZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDQ2OTI3NTIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ0NzcxNjE5LCJpYXQiOjE1NDQ3NjgwMTksImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.UiaIP5OGJPzO2PrlyJpuhteyScKSX2dkT9Z-fHnFuEMgPH7NkW3iP2B86Nl6-3jfRvXLLsVRWkemQEg05cANNe5yjalwe3tAk2gdImtSPeOn-43tMdXeIY7LmQ2s_bsDK-ZnHKYXhEH5N2T5ZerRzzdNRrKVPtD7-qnx-F6VXBJs8E9pFO5kJfqJlg3FawoOWVL4tBRFewRMYnpVqPRY5Ec-98Amc6iyUJ2k8jO4i-IY9EJlwRaZYL7NHqI_-rpLAqVu2HpcdNKjbwXTfpdTEBwE9xTpVKtfyyfi5XYRppcmwovORRZk93oK5xCJ8yvjjAaM7VDgvYtgbzAJLzVo8Q'
+    token = 'eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjc1Y2EyOWYtZmViOC0xMWU4LWFlMTAtZGRlYmE4Yjg2ZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDQ2OTI3NTIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ0NzcxNjE5LCJpYXQiOjE1NDQ3NjgwMTksImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.UiaIP5OGJPzO2PrlyJpuhteyScKSX2dkT9Z-fHnFuEMgPH7NkW3iP2B86Nl6-3jfRvXLLsVRWkemQEg05cANNe5yjalwe3tAk2gdImtSPeOn-43tMdXeIY7LmQ2s_bsDK-ZnHKYXhEH5N2T5ZerRzzdNRrKVPtD7-qnx-F6VXBJs8E9pFO5kJfqJlg3FawoOWVL4tBRFewRMYnpVqPRY5Ec-98Amc6iyUJ2k8jO4i-IY9EJlwRaZYL7NHqI_-rpLAqVu2HpcdNKjbwXTfpdTEBwE9xTpVKtfyyfi5XYRppcmwovORRZk93oK5xCJ8yvjjAaM7VDgvYtgbzAJLzVo8Q'
     event = {'resource': '/api/test', 'path': '/api/test', 'httpMethod': 'POST',
              'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br',
                          'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7',
