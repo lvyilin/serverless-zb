@@ -61,6 +61,26 @@ var Helper = window.Helper || {};
             alert("You have been signed out.");
             window.location = "login.html";
         });
+        $('#nav1').click(function (event) {
+            event.preventDefault();
+            $('#tab2').hide();
+            $("#tab3").hide();
+            $("#tab1").show();
+        });
+        $('#nav2').click(function (event) {
+            event.preventDefault();
+            $('#tab1').hide();
+            $("#tab3").hide();
+            $("#tab2").show();
+
+        });
+        $('#nav3').click(function (event) {
+            event.preventDefault();
+            $('#tab2').hide();
+            $("#tab1").hide();
+            $("#tab3").show();
+
+        });
     });
 
 }(jQuery));

@@ -9,29 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>UploadTags</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- MetisMenu CSS -->
-    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Morris Charts CSS -->
-    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <title>User</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/metisMenu.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/morris.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -53,85 +36,16 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a id="signOut"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-user -->
                 </li>
-                <!-- /.dropdown -->
             </ul>
-            <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
@@ -149,27 +63,72 @@
                         </li>
 
                         <li>
-                            <a href="user.html"><i class="fa fa-edit fa-fw"></i> Upload Dataset & Add Partner</a>
+                            <a href="#" id="nav1"><i class="fa fa-edit fa-fw"></i> Upload Dataset & Add Partner</a>
                         </li>
                         <li>
-                            <a href="uploadtag.html"><i class="fa fa-table fa-fw"></i> Dataset Details & Upload Tags</a>
-                        </li>
-
-                        <li>
-                            <a href="test.html"><i class="fa fa-wrench fa-fw"></i> Run Test</a>
+                            <a href="#" id="nav2"><i class="fa fa-table fa-fw"></i> Dataset Details & Upload Tags</a>
                         </li>
                        
                         <li>
-                            <a href="export.html"><i class="fa fa-files-o fa-fw"></i> Export Results</a>
+                            <a href="#" id="nav3"><i class="fa fa-files-o fa-fw"></i> Export Results</a>
                         </li>
                     </ul>
                 </div>
-                <!-- /.sidebar-collapse -->
             </div>
-            <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
+        <div class="page-wrapper" id="tab1">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Upload Dataset & Add Partner</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+ 
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-edit fa-fw"></i> Upload Dataset
+
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+							 <form enctype="multipart/form-data">
+								<div class="file-loading">
+									<input id="kv-explorer" type="file" multiple>
+								</div>
+								<br>
+								<div class="file-loading">
+									<input id="file-0a" class="file" type="file" multiple data-min-file-count="1" data-theme="fas">
+								</div>
+								<br>
+								<button type="submit" class="btn btn-primary">Submit</button>
+								<button type="reset" class="btn btn-outline-secondary">Reset</button>
+							</form>
+						
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-edit fa-fw"></i> Add partner
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+							<form method="post" action="" id="PartnerForm">
+								<input name="addPartner" id="addPartner" value="" placeholder="Partners" type="text">
+								<input value="Submit" type="submit">
+							</form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <div class="page-wrapper" id="tab2">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Dataset Details & Upload Tags</h1>
@@ -250,35 +209,57 @@
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                   
+
                 </div>
                 <!-- /.col-lg-8 -->
 
             </div>
             <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
 
+        <div class="page-wrapper" id="tab3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Export Result</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> (数据集名称)
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+							Click <a href="#">Here</a> to download the results.
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+                </div>
+                <!-- /.col-lg-8 -->
+
+            </div>
+            <!-- /.row -->
+        </div>
     </div>
-    <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="../vendor/raphael/raphael.min.js"></script>
-    <script src="../vendor/morrisjs/morris.min.js"></script>
-    <script src="../data/morris-data.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
+    <script src="js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="js/vendor/raphael.min.js"></script>
+    <script src="js/vendor/metisMenu.min.js"></script>
+    <script src="js/vendor/sb-admin-2.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <!--<script src="js/vendor/morris.min.js"></script>-->
+    <!--<script src="js/vendor/morris-data.js"></script>-->
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/user.js"></script>
 </body>
 
 </html>
