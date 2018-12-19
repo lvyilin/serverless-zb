@@ -9,6 +9,7 @@ import boto3
 import base64
 from boto3.dynamodb.conditions import Key, Attr
 from io import StringIO
+from urllib.parse import quote_plus
 
 region = 'ap-northeast-1'
 userpool_id = 'ap-northeast-1_c5w0oPPED'
@@ -109,7 +110,7 @@ def handler(event, context):
             writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for rec in results:
                 writer.writerow(rec)
-            s3.put_object(Bucket=bucket_name, Key=s3_path, Body=f.read())
+            s3.put_object(Bucket=bucket_name, Key=s3_path, Body=f.getvalue())
             link = bucket_url + s3_path
             flag = True
             break
@@ -123,7 +124,7 @@ def handler(event, context):
                 "status": "success",
                 "message": message,
                 "data": {
-                    "link": link
+                    "link": quote_plus(link,safe=":/")
                 }
             }
     except Exception as e:
@@ -142,7 +143,7 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    token = 'eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjc1Y2EyOWYtZmViOC0xMWU4LWFlMTAtZGRlYmE4Yjg2ZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDQ2OTI3NTIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ0Nzc5MTQ0LCJpYXQiOjE1NDQ3NzU1NDQsImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.k96NPxkSslXNSh7e5h5B2Kv6AxPWB94XKDolZq4ilvATmft2IJEnHG3YCFTdIu1XuyP-m5YevC7451ucSW_s4I_e45aHe8X7x1rDpP-ygewByYFBS_y6YKfm7wS2A_F6DoyOt8TqBotHIGNO-GCI7UUb5t6y0bLo50qBY-jJa7zzWJ8NAyHArFPopjzozcSHb6tDqTWrnrqPKg7uEvJYlzLNSL3Psd_Jpzilr5aSl21OOM8NdAg2wa6nQANa0VdPSSouRDitjOKtngWnXQt4wGdOROWgBGdqbFzVYGFbcQ0BLXQy4AtGEi-SGS2ZW4t2Zq5l5OCUxq_kgFR60h8W1A'
+    token = 'eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiNGVlZGZmN2ItMDNhOC0xMWU5LWJiMmUtMzcwMGNmOGFhODE4IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDUyMzU3MDIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ1MjM5MzAyLCJpYXQiOjE1NDUyMzU3MDIsImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.nWCDKgLXV-W5amrTD9Y4lifxGrfq_IU-nKbq_ZS8f7LUbAqe2PyR5X3oT0HLDzNOvTPEYhnEw56skrPBUkKdvxdecozQgIZoHqotYr3P3920dXvME4WUVd5N-VFyCC9iEufdQ2zDAavAHF5zlkPMCV-1hxx0nLhDw-NNWZFFyeHSzfdkSCjvqjNeLwO2DHSdR6l-4zRZXmcEFCUToCKIlTRqDqpoctsNxHGmWvz3LtVeX9jF7JIxnEZRd8zBXgdK3Hycph3hHV08GW41Gn4axFFi73Lib2f3s0eKYqnuwC9Mn4doExAOCbqNYUdIhHpa1ofKOnzBRu54amiWdE-qIA'
     event = {'resource': '/api/test', 'path': '/api/test', 'httpMethod': 'POST',
              'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br',
                          'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7',
@@ -179,7 +180,7 @@ if __name__ == '__main__':
                                    'X-Amzn-Trace-Id': ['Root=1-5c120e80-a53212fcce6cbe3cf7a7ce4a'],
                                    'X-Forwarded-For': ['193.38.139.82, 70.132.40.89'], 'X-Forwarded-Port': ['443'],
                                    'X-Forwarded-Proto': ['https']},
-             'queryStringParameters': {"id": "lvyilin48@foxmail.com#test.csv"},
+             'queryStringParameters': {"id": "lvyilin48@foxmail.com#NER"},
              'multiValueQueryStringParameters': None, 'pathParameters': None, 'stageVariables': None,
              'requestContext': {'resourceId': 'tybalc', 'resourcePath': '/api/test', 'httpMethod': 'POST',
                                 'extendedRequestId': 'R1c0IFSEtjMFVnA=',
@@ -198,10 +199,3 @@ if __name__ == '__main__':
              'isBase64Encoded': False}
     handler(event, None)
 
-s = {
-    "queryStringParameters": {
-        "id": "lvyilin48@foxmail.com#test.csv"
-    },
-    "headers": {
-        "Authorization": "eyJraWQiOiJVZ0VBeGNJTmlvQktPbWVubjJhN3FOd1pzZWVVdzVScDd0MFZXTU9PV0xzPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzYmJjNmVkOC03MWUxLTQyZTktYTNiNi0xNjM0N2I1NWNmZTQiLCJhdWQiOiJqMWF2MzhnNDRtZ3BtOG41NGp2cm1xYTZnIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiMjc1Y2EyOWYtZmViOC0xMWU4LWFlMTAtZGRlYmE4Yjg2ZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDQ2OTI3NTIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1ub3J0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1ub3J0aGVhc3QtMV9jNXcwb1BQRUQiLCJjb2duaXRvOnVzZXJuYW1lIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIiwiZXhwIjoxNTQ0Nzc1MzQ3LCJpYXQiOjE1NDQ3NzE3NDcsImVtYWlsIjoibHZ5aWxpbjQ4QGZveG1haWwuY29tIn0.QwoCzGH-LOitgbDsEPVHrZ2qUNUXox9quiOQpsXAiZ5J-wGAQi5QJdZXVISPtQCLY56LRga1G81xHeKqH0G6oE-IXtBuVmqeoSCykiP3lGPH3-BL2lK_3VXMBc6nleirdMqks9yPHIWieVL_A_pO4vHs1X5uZ1VcrRxNeZJRx7Tqk69k7Ry81aCh8-vxk9NjCvt56pKm0bh56vxIo0Mlqgcpyf16c3DclS-6wbb6iJVjWaA1mfDQmjL4cMnevkXTGzxZ6_YLu1t5hGHF0gCB8bUL2cSy2tI5Ryh20uTni2k0w76wlFnZAnfONCTD3QZTCnZscotljPskDVHD3had7A"},
-}
